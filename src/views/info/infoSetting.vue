@@ -10,9 +10,9 @@
             <div class="info">{{ name }}</div>
           </template>
           <div class="content">
-            修改姓名
-            <input type="text" v-model="firstName" placeholder="姓氏"/>
-            <input type="text" v-model="lastName" placeholder="姓字"/>
+            修改姓名<br>
+            <input type="text" v-model="firstName" placeholder="姓氏"/><br>
+            <input type="text" v-model="lastName" placeholder="名字"/>
             <button @click="changeName()">儲存</button>
           </div>
         </el-collapse-item>
