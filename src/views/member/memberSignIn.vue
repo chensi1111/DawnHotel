@@ -45,6 +45,8 @@ const errorPassword = ref("");
 const auth = getAuth();
 const dialogVisible = ref(false);
 const count = ref(3);
+const router = useRouter();
+const previousRoute = ref("");
 
 const signIn = () => {
   errorEmail.value = "";
@@ -76,7 +78,6 @@ const signIn = () => {
 };
 
 //路由方法
-const router = useRouter();
 function toSignUp() {
   router.push({
     path: "/member/signup",
@@ -84,9 +85,14 @@ function toSignUp() {
 }
 function confirmSignIn() {
   dialogVisible.value = false;
-  router.push({
-    path: "/",
-  });
+  //跳回上個路由或首頁
+  if (previousRoute.value) {
+    router.push(previousRoute.value);
+  } else {
+    router.push({
+      path: "/",
+    });
+  }
 }
 
 //根據視窗大小改變dialog
@@ -98,6 +104,7 @@ const checkWindowSize = () => {
 onMounted(() => {
   checkWindowSize();
   window.addEventListener("resize", checkWindowSize);
+  previousRoute.value = router.currentRoute.value.query.redirect || "/";
 });
 
 onBeforeUnmount(() => {

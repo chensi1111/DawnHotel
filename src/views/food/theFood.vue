@@ -6,7 +6,7 @@
   </div>
   <div class="topic">
     <h1 data-aos="fade-down" data-aos-duration="1000">美食餐飲</h1>
-    <h2 data-aos="fade-down" data-aos-duration="1500">Resturant</h2>
+    <h2 data-aos="fade-down" data-aos-duration="1500">Restaurant</h2>
     <div class="container">
       <el-breadcrumb :separator-icon="ArrowRight">
         <el-breadcrumb-item :to="{ path: '/' }"

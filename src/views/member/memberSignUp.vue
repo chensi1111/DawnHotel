@@ -50,6 +50,14 @@
     <div class="error" v-show="errorEmail">{{ errorEmail }}</div>
     <div class="error" v-show="errorPassword">{{ errorPassword }}</div>
   </div>
+  <el-dialog v-model="dialogVisible" title="提示" :width="dialogWidth">
+    <span>登入成功，{{ count }}秒後將自動跳轉</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="confirmSignIn"> 確認 </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -59,7 +67,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { ref, computed } from "vue";
+import { ref, computed ,onMounted,onBeforeUnmount} from "vue";
 import { ElMessage } from "element-plus";
 
 //獲得全名
@@ -77,6 +85,8 @@ const errorName = ref("");
 const errorEmail = ref("");
 const errorPassword = ref("");
 const auth = getAuth();
+const dialogVisible = ref(false);
+const count = ref(3);
 
 const signUP = () => {
   errorName.value = "";
@@ -91,19 +101,23 @@ const signUP = () => {
         const user = userCredential.user;
         updateProfile(user, { displayName: fullName.value })
           .then(() => {
-            ElMessage({
-              message: "登入成功",
-              type: "success",
-            });
+            //3秒後自動跳轉
+            dialogVisible.value = true;
+            const counting = setInterval(() => {
+              count.value--;
+              if (count.value === 0) {
+                clearInterval(counting);
+                confirmSignUp();
+              }
+            }, 1000);
           })
           .catch((error) => {
             ElMessage({
-              message: "登入失敗",
+              message: "註冊失敗",
               type: "error",
             });
             console.log(error);
           });
-        router.push({ path: "/home" });
       })
       .catch((error) => {
         console.log("error", error);
@@ -135,6 +149,27 @@ function toSignIn() {
     path: "/member",
   });
 }
+function confirmSignUp() {
+  dialogVisible.value = false;
+  router.push({
+    path: "/",
+  });
+}
+
+//根據視窗大小改變dialog
+const dialogWidth = ref("500");
+const checkWindowSize = () => {
+  dialogWidth.value = window.innerWidth < 767 ? "300" : "500";
+};
+
+onMounted(() => {
+  checkWindowSize();
+  window.addEventListener("resize", checkWindowSize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", checkWindowSize);
+});
 </script>
 
 <style scoped>
@@ -209,7 +244,7 @@ span:hover {
   .name input {
     width: 100%;
   }
-  .name .first{
+  .name .first {
     margin-right: 0;
   }
 }
@@ -217,9 +252,8 @@ span:hover {
   .container {
     width: 280px;
   }
-  input{
+  input {
     margin: 5px 0;
   }
-  
 }
 </style>

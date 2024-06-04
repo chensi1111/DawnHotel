@@ -118,7 +118,6 @@ const router = createRouter({
         {
           path: 'list',
           component: () => import('@/views/info/infoList.vue'),
-          meta: { notScroll: true }
         },
         {
           path: 'setting',
@@ -157,7 +156,7 @@ const getCurrentUser = () => {
     );
   });
 };
-console.log(getCurrentUser(),"getCurrentUser")
+
 //未登入則返回登入頁
 router.beforeEach(async (to) => {
   if (to.meta.requiresAuth && !(await getCurrentUser())) {

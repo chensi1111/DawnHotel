@@ -105,6 +105,9 @@ const handleSignOut = () => {
     .then(() => {
       isMemberOpen.value = false;
       isSignedIn.value = false;
+      router.push({
+        path:'/member'
+      })
     })
     .catch((error) => {
       isMemberOpen.value = false;
@@ -220,9 +223,10 @@ function toTrafic() {
   });
 }
 function toMember() {
-  isMemberOpen.value = false;
+  isMemberOpen.value = false; 
   router.push({
     path: "/member",
+    query: { redirect: router.currentRoute.value.fullPath }
   });
 }
 function toSignUp() {

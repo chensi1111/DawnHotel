@@ -11,7 +11,8 @@
           </template>
           <div class="content">
             修改姓名
-            <input type="text" v-model="newName" />
+            <input type="text" v-model="firstName" placeholder="姓氏"/>
+            <input type="text" v-model="lastName" placeholder="姓字"/>
             <button @click="changeName()">儲存</button>
           </div>
         </el-collapse-item>
@@ -43,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits,computed } from "vue";
 import {
   getAuth,
   onAuthStateChanged,
@@ -58,12 +59,16 @@ import { ElMessageBox } from "element-plus";
 const auth = getAuth();
 const email = ref("");
 const name = ref("");
-const newName = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const fullName = computed(() => {
+  return firstName.value + lastName.value;
+});
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     email.value = user.email;
     name.value = user.displayName;
-    newName.value = user.displayName;
   }
 });
 
@@ -72,9 +77,9 @@ const emits = defineEmits(["updateName"]);
 function changeName() {
   const user = auth.currentUser;
   if (user) {
-    updateProfile(user, { displayName: newName.value })
+    updateProfile(user, { displayName: fullName.value })
       .then(() => {
-        name.value = newName.value;
+        name.value = fullName.value;
         //傳給theInfo
         emits("updateName", name.value);
         ElMessageBox.alert("姓名更新成功", "提示", {

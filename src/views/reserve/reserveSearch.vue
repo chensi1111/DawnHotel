@@ -311,6 +311,7 @@ function toConfirm(item) {
       callback: () => {
         router.push({
           path: "/member",
+          query: { redirect: router.currentRoute.value.fullPath }
         });
       },
     });

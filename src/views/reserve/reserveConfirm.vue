@@ -132,7 +132,7 @@ const updateCounts = async () => {
 
       await addDoc(ordersCollectionRef, orderData);
 
-      router.push({ path: '/home' });
+      router.push({ path: '/info/list' });
       ElMessage({
         message: '訂單已成功送出',
         type: 'success',
