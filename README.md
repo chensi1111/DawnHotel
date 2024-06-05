@@ -1,35 +1,23 @@
-# DawnHotel
+# 簡介
 
-This template should help get you started developing with Vue 3 in Vite.
+使用 Vue3所打造的訂房網站，以Vite建立開發環境，使用Firebase資料庫，Vue Router處理路由，Element Plus UI框架和實現 SPA 單頁應用。
 
-## Recommended IDE Setup
+# 技術
+- Vue.js
+- Vite
+- RWD
+- JavaScript
+- Vue Router
+- Element Plus
+- Firebase Firestore Database 及 Authentication
+- Day.js
+- AOS.js
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+# 架構
+- 首頁:廣告輪播圖
+- 導覽頁:一般資訊介紹
+- 訂房頁:快速訂房(篩選房型)，一般訂房(顯示所有剩餘空房)
+- 會員頁:登入，註冊，修改密碼，修改Email，訂單列表
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+# Demo
+https://chensi1111.github.io/DawnHotel/
