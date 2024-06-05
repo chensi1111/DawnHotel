@@ -10,17 +10,35 @@
             <div class="info">{{ name }}</div>
           </template>
           <div class="content">
-            修改姓名<br>
-            <input type="text" v-model="firstName" placeholder="姓氏"/><br>
-            <input type="text" v-model="lastName" placeholder="名字"/>
+            修改姓名<br />
+            <input type="text" v-model="firstName" placeholder="姓氏" /><br />
+            <input type="text" v-model="lastName" placeholder="名字" />
             <button @click="changeName()">儲存</button>
           </div>
         </el-collapse-item>
       </el-collapse>
-      <div class="email">
-        <div class="topic">信箱</div>
-        <div class="info">{{ email }}</div>
-      </div>
+      <el-collapse>
+        <el-collapse-item>
+          <template #title>
+            <div class="topic">信箱</div>
+            <div class="info">{{ email }}</div>
+          </template>
+          <div class="content">
+            修改信箱<br />
+            <input
+              type="password"
+              v-model="password"
+              placeholder="請輸入密碼"
+            /><br />
+            <input
+              type="text"
+              v-model="newEmail"
+              placeholder="請輸入新信箱"
+            /><br />
+            <button @click="sendVerificationEmail()">發送驗證信件</button>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
       <div class="type">帳號安全</div>
       <el-collapse>
         <el-collapse-item title="修改密碼">
@@ -44,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits,computed } from "vue";
+import { ref, defineEmits, computed } from "vue";
 import {
   getAuth,
   onAuthStateChanged,
@@ -52,8 +70,10 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
+  verifyBeforeUpdateEmail,
 } from "firebase/auth";
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox ,ElMessage} from "element-plus";
+import { useRouter } from "vue-router";
 
 //獲取用戶資料
 const auth = getAuth();
@@ -94,6 +114,75 @@ function changeName() {
       });
   }
 }
+//更新email
+const password = ref("");
+const newEmail = ref("");
+const router = useRouter();
+
+const sendVerificationEmail = async () => {
+  const user = auth.currentUser;
+  if (user) {
+    if (newEmail.value === email.value) {
+      ElMessageBox.alert("新信箱不得與舊信箱相同", "提示", {
+        confirmButtonText: "確認",
+      });
+    } else {
+      //用email和舊密碼作為認證
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        password.value
+      );
+      try {
+        await reauthenticateWithCredential(user, credential);
+        await verifyBeforeUpdateEmail(user, newEmail.value);
+        ElMessageBox.alert("驗證信已成功發送，請查看您的新信箱", "提示", {
+          confirmButtonText: "確認",
+        })
+          .then(() => {
+            ElMessageBox.confirm("請在驗證成功後重新登入", "提示", {
+              confirmButtonText: "登出",
+              cancelButtonText: "取消",
+            })
+              .then(() => {
+                auth.signOut();
+                router.push({
+                  path: "/member",
+                });
+              })
+              .catch(() => {
+                ElMessage({
+                  type: "info",
+                  message: "信箱尚未更新成功，請驗證後重新登入",
+                });
+              });
+          })
+          .catch(() => {});
+      } catch (error) {
+        console.error("驗證信發送失敗", error);
+        if (error.code === "auth/missing-password") {
+          ElMessageBox.alert("密碼不得為空", "提示", {
+            confirmButtonText: "確認",
+          });
+        }
+        if (error.code === "auth/invalid-credential") {
+          ElMessageBox.alert("密碼錯誤", "提示", {
+            confirmButtonText: "確認",
+          });
+        }
+        if (error.code === "auth/missing-new-email") {
+          ElMessageBox.alert("信箱不得為空", "提示", {
+            confirmButtonText: "確認",
+          });
+        }
+        if (error.code === "auth/invalid-new-email") {
+          ElMessageBox.alert("信箱格式錯誤", "提示", {
+            confirmButtonText: "確認",
+          });
+        }
+      }
+    }
+  }
+};
 
 //更新密碼
 const oldPassword = ref("");
@@ -190,24 +279,27 @@ function changePassword() {
   margin-left: 10px;
 }
 input {
-  margin: 3px 10px;
+  margin: 3px 0 3px 10px;
 }
-@media screen and (max-width:767px){
-  .setting{
+button {
+  margin-left: 10px;
+}
+@media screen and (max-width: 767px) {
+  .setting {
     padding: 30px 10px;
   }
-  .container{
+  .container {
     padding: 10px;
   }
-  .email{
+  .email {
     flex-wrap: wrap;
   }
 }
-@media screen and (max-width:414px){
-  .type{
+@media screen and (max-width: 414px) {
+  .type {
     font-size: 18px;
   }
-  .info{
+  .info {
     font-size: 16px;
   }
 }
