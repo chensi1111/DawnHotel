@@ -20,7 +20,7 @@
       <el-collapse>
         <el-collapse-item>
           <template #title>
-            <div class="topic">信箱</div>
+            <div class="topic">Email</div>
             <div class="info">{{ email }}</div>
           </template>
           <div class="content">
@@ -258,6 +258,9 @@ function changePassword() {
   font-size: 20px;
   font-weight: bold;
   margin: 5px 0;
+}
+.topic{
+  font-size: 20px;
 }
 .el-collapse {
   border-top: unset;
