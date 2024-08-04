@@ -21,31 +21,3 @@
 
 # Demo
 https://chensi1111.github.io/DawnHotel/
-
-## 首頁
-
-![DawnHotel_home](https://github.com/chensi1111/DawnHotel/assets/151055882/fc50c549-a410-4e8c-a726-08262a6baf05)
-
-## 介紹頁
-
-![DawnHotel_news-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/5f1155e4-435d-4532-8df6-0fe6da57cbf2)
-
-## 快速訂房
-
-![DawnHotel_reserve_search-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/9e9b92f6-cee4-4446-81fa-777001a8f8fe)
-
-## 一般訂房
-
-![DawnHotel__reserve_normal-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/e6caae2e-7359-4fa1-995f-fc8a227de8b5)
-
-## 登入
-
-![DawnHotel_login-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/a8e95385-99db-4caa-a76c-5be970ecd25a)
-
-## 訂單資訊
-
-![DawnHotel_info-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/b50ea972-0ad5-45c9-8bfb-d1dc33a14461)
-
-## 個人資訊
-
-![DawnHotel_setting-removebg](https://github.com/chensi1111/DawnHotel/assets/151055882/5b067874-11b8-4d5b-96b2-64a259043ab5)
